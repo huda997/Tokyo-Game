@@ -1,23 +1,28 @@
 package com.example.olympic_tokyo
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
+import com.example.olympic_tokyo.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+    override val LOG_TAG: String="MAIN_ACTIVITY"
+    override val bindingInflater:(LayoutInflater) -> ActivityMainBinding= ActivityMainBinding::inflate
+
+
+    private fun openFile(){
+        val inputStream= assets.open("tokyo.csv")//access file
+        val buffer= BufferedReader(InputStreamReader(inputStream))
+        buffer.forEachLine {
+            log(it)
+        }
+    }
+
+    override fun setup() {
         openFile()
     }
 
-    private fun openFile(){
-        val inputStream= assets.open("tokyo.csv")
-        val buffer= BufferedReader(InputStreamReader(inputStream))
-        buffer.forEachLine {
-            Log.v("MAIN_ACTIVITY",it)
-        }
+    override fun addCallback() {
+        //binding.action
     }
 }
